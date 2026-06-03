@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load crispy_forms_tags %}
 {% block content %}
 
 <h2>My Walls</h2>
@@ -19,7 +19,11 @@
 {% for wall in walls %}
 
 <div class="card mb-3 p-3">
-    <h4>{{ wall.title }}</h4>
+    <h4>
+    <a href="{% url 'wall-detail' wall.id %}">
+        {{ wall.title }}
+    </a>
+</h4>
 
     <small>
         Created:

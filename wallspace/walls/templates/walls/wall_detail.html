@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>{{ wall.title }}</h2>
+
+<hr>
+
+<div class="border rounded p-4"
+     style="height:700px;">
+
+    <p>
+        Empty Wall Board
+    </p>
+
+</div>
+
+<a href="{% url 'home' %}">
+    Back
+</a>
+
+{% endblock %}

@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404
 
 from .models import Wall
 from .forms import WallForm
@@ -39,3 +40,21 @@ def home(request):
         request, 'walls/home.html', context
 
     )
+
+@login_required
+def wall_detail(request, pk):
+
+    wall = get_object_or_404(
+        Wall,
+        pk=pk
+    )
+
+    context = {
+        'wall': wall
+    }
+
+    return render(
+        request,
+        'walls/wall_detail.html',
+        context
+    )   
