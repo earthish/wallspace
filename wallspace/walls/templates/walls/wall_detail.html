@@ -19,11 +19,33 @@
 <hr>
 
 <div class="border rounded p-4"
-     style="height:700px;">
+     style="height:700px; position:relative;">
 
-    <p>
-        Empty Wall Board
-    </p>
+    {% for note in notes %}
+    <div 
+        class="card p-2"
+        data-note-id="{{ note.id }}"
+
+        style="
+        width:200px;
+        position: absolute;
+
+        left:{{ note.x_position }}px;
+        top:{{ note.y_position }}px;
+        background-color: {{ note.color }};">
+    
+        <strong>
+            {{ note.title }}
+        </strong>
+
+        <p>
+            {{ note.content}}
+        </p>
+
+    </div>
+    {% empty %}
+        no notes yet.
+    {% endfor %}
 
 </div>
 

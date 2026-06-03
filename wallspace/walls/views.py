@@ -1,3 +1,4 @@
+import random
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
@@ -59,10 +60,11 @@ def wall_detail(request, pk):
             note = form.save(
                 commit=False
             )
-
+            
             note.wall = wall
             note.creator = request.user
-
+            note.x_position = random.randint(50, 600)
+            note.y_position = random.randint(50, 400)
             note.save()
 
             return redirect(
@@ -75,8 +77,9 @@ def wall_detail(request, pk):
         form = NoteForm()
 
     context = {
-        'wall': wall,
-        'form': form,
+    'wall': wall,
+    'form': form,
+    'notes': wall.notes.all()
     }
 
     return render(
