@@ -52,5 +52,93 @@
 <a href="{% url 'home' %}">
     Back
 </a>
+<script>
 
+interact('.note')
+.draggable({
+
+    listeners: {
+
+        move(event) {
+
+            const target = event.target;
+
+            let x =
+                parseFloat(
+                    target.getAttribute(
+                        'data-x'
+                    )
+                ) || 0;
+
+            let y =
+                parseFloat(
+                    target.getAttribute(
+                        'data-y'
+                    )
+                ) || 0;
+
+            x += event.dx;
+            y += event.dy;
+
+            target.style.transform =
+                `translate(${x}px, ${y}px)`;
+
+            target.setAttribute(
+                'data-x',
+                x
+            );
+
+            target.setAttribute(
+                'data-y',
+                y
+            );
+        },
+
+        end(event) {
+
+            const target =
+                event.target;
+
+            const noteId =
+                target.dataset.noteId;
+
+            const x =
+                parseFloat(
+                    target.getAttribute(
+                        'data-x'
+                    )
+                ) || 0;
+
+            const y =
+                parseFloat(
+                    target.getAttribute(
+                        'data-y'
+                    )
+                ) || 0;
+
+            fetch(
+                '/notes/update-position/',
+                {
+                    method: 'POST',
+
+                    headers: {
+                        'Content-Type':
+                            'application/json',
+
+                        'X-CSRFToken':
+                            '{{ csrf_token }}'
+                    },
+
+                    body: JSON.stringify({
+                        note_id: noteId,
+                        x: x,
+                        y: y
+                    })
+                }
+            );
+        }
+    }
+});
+
+</script>
 {% endblock %}
