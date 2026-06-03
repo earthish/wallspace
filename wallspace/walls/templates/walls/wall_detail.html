@@ -12,86 +12,104 @@
 
     {{ form|crispy }}
 
-    <button class="btn btn-primary" type="submit">
-        Add note
+    <button
+        class="btn btn-primary"
+        type="submit">
+
+        Add Note
+
     </button>
 </form>
+
 <hr>
 
-<div class="border rounded p-4"
-     style="height:700px; position:relative;">
+<div
+    class="border rounded p-4"
+    style="
+        height:700px;
+        position:relative;
+        overflow:hidden;
+    ">
 
     {% for note in notes %}
-    <div 
-        class="card p-2"
-        data-note-id="{{ note.id }}"
 
-        style="
-        width:200px;
-        position: absolute;
+        <div
+            class="card p-2 note"
+            data-note-id="{{ note.id }}"
 
-        left:{{ note.x_position }}px;
-        top:{{ note.y_position }}px;
-        background-color: {{ note.color }};">
-    
-        <strong>
-            {{ note.title }}
-        </strong>
+            style="
+                width:200px;
+                position:absolute;
 
-        <p>
-            {{ note.content}}
-        </p>
+                left:{{ note.x_position }}px;
+                top:{{ note.y_position }}px;
 
-    </div>
+                background-color:{{ note.color }};
+                cursor:grab;
+            ">
+
+            <strong>
+                {{ note.title }}
+            </strong>
+
+            <p>
+                {{ note.content }}
+            </p>
+
+        </div>
+
     {% empty %}
-        no notes yet.
+
+        <p>No notes yet.</p>
+
     {% endfor %}
 
 </div>
 
-<a href="{% url 'home' %}">
+<br>
+
+<a
+    href="{% url 'home' %}"
+    class="btn btn-secondary">
+
     Back
+
 </a>
+
+{% endblock %}
+
+
+{% block scripts %}
+
 <script>
 
-interact('.note')
-.draggable({
+interact('.note').draggable({
 
     listeners: {
 
         move(event) {
 
-            const target = event.target;
+            const target =
+                event.target;
 
-            let x =
+            let left =
                 parseFloat(
-                    target.getAttribute(
-                        'data-x'
-                    )
+                    target.style.left
                 ) || 0;
 
-            let y =
+            let top =
                 parseFloat(
-                    target.getAttribute(
-                        'data-y'
-                    )
+                    target.style.top
                 ) || 0;
 
-            x += event.dx;
-            y += event.dy;
+            left += event.dx;
+            top += event.dy;
 
-            target.style.transform =
-                `translate(${x}px, ${y}px)`;
+            target.style.left =
+                `${left}px`;
 
-            target.setAttribute(
-                'data-x',
-                x
-            );
-
-            target.setAttribute(
-                'data-y',
-                y
-            );
+            target.style.top =
+                `${top}px`;
         },
 
         end(event) {
@@ -102,19 +120,15 @@ interact('.note')
             const noteId =
                 target.dataset.noteId;
 
-            const x =
+            const left =
                 parseFloat(
-                    target.getAttribute(
-                        'data-x'
-                    )
-                ) || 0;
+                    target.style.left
+                );
 
-            const y =
+            const top =
                 parseFloat(
-                    target.getAttribute(
-                        'data-y'
-                    )
-                ) || 0;
+                    target.style.top
+                );
 
             fetch(
                 '/notes/update-position/',
@@ -131,8 +145,8 @@ interact('.note')
 
                     body: JSON.stringify({
                         note_id: noteId,
-                        x: x,
-                        y: y
+                        x: left,
+                        y: top
                     })
                 }
             );
@@ -141,4 +155,5 @@ interact('.note')
 });
 
 </script>
+
 {% endblock %}
