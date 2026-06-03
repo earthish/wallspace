@@ -4,6 +4,8 @@ from django.shortcuts import get_object_or_404
 
 from .models import Wall
 from .forms import WallForm
+from notes.forms import NoteForm
+from notes.models import Note
 # Create your views here.
 
 @login_required #decorator, it checks automatically if a certain condition is satisfied or not
@@ -48,9 +50,33 @@ def wall_detail(request, pk):
         Wall,
         pk=pk
     )
+    if request.method == 'POST':
+
+        form = NoteForm(request.POST)
+
+        if form.is_valid():
+
+            note = form.save(
+                commit=False
+            )
+
+            note.wall = wall
+            note.creator = request.user
+
+            note.save()
+
+            return redirect(
+                'wall-detail',
+                pk=wall.pk
+            )
+
+    else:
+
+        form = NoteForm()
 
     context = {
-        'wall': wall
+        'wall': wall,
+        'form': form,
     }
 
     return render(
