@@ -29,9 +29,25 @@
 
     {% endif %}
 
-    <button class="btn btn-danger">
-        Delete Wall
-    </button>
+    {% if is_owner %}
+
+    <form
+        method="POST"
+        action="{% url 'delete-wall' wall.id %}">
+
+        {% csrf_token %}
+
+        <button
+            type="submit"
+            class="btn btn-danger">
+
+            Delete Wall
+
+        </button>
+
+    </form>
+
+    {% endif %}
 
 </div>
 

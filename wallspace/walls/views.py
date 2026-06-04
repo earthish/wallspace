@@ -139,4 +139,26 @@ def wall_detail(request, pk):
         request,
         'walls/wall_detail.html',
         context
-    )   
+    )
+
+@login_required
+def delete_wall(request, pk):
+
+    wall = get_object_or_404(
+        Wall,
+        pk=pk,
+        owner=request.user
+    )
+
+    if request.method == "POST":
+
+        wall.delete()
+
+        return redirect(
+            "home"
+        )
+
+    return redirect(
+        "wall-detail",
+        pk=pk
+    )
