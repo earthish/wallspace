@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 
-from .models import Wall
+from .models import Wall, WallMember
 from .forms import WallForm
 from notes.forms import NoteForm
 from notes.models import Note
@@ -30,9 +30,15 @@ def home(request):
         # If they are just looking at the page, give them a blank, empty form
         form = WallForm()
 
-    walls = Wall.objects.filter(
+    owned_walls = Wall.objects.filter(
         owner=request.user
     )
+    shared_walls = Wall.objects.filter(
+    members__user=request.user
+    )
+    walls = (
+        owned_walls | shared_walls
+    ).distinct()
 
     context={
         'walls':walls,
@@ -50,8 +56,20 @@ def wall_detail(request, pk):
     wall = get_object_or_404(
         Wall,
         pk=pk,
-        owner=request.user
     )
+    is_owner = (
+        wall.owner == request.user
+    )
+    is_member = WallMember.objects.filter(
+        wall=wall,
+        user=request.user
+    ).exists()
+
+    if not is_owner and not is_member:
+        return redirect("home")
+
+    notes = wall.notes.all()
+
     if request.method == 'POST':
 
         form = NoteForm(request.POST)
@@ -80,7 +98,8 @@ def wall_detail(request, pk):
     context = {
     'wall': wall,
     'form': form,
-    'notes': wall.notes.all()
+    'notes': wall.notes.all(),
+    'is_owner': is_owner
     }
 
     return render(
