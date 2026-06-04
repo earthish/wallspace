@@ -145,7 +145,8 @@ def wall_detail(request, pk):
     'form': form,
     'notes': wall.notes.all(),
     'is_owner': is_owner,
-    'can_edit': can_edit
+    'can_edit': can_edit,
+    'members': WallMember.objects.filter(wall=wall)
     }
 
     return render(

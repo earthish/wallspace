@@ -5,50 +5,48 @@
 
 <h2>{{ wall.title }}</h2>
 
-<div class="d-flex gap-2 mb-3">
-    {% if can_edit %}
+<div class="d-flex gap-2 mb-3 align-items-center justify-content-between">
 
-    <button
-        class="btn btn-primary"
-        data-bs-toggle="modal"
-        data-bs-target="#addNoteModal">
-
-        + Add Note
-
-    </button>
-    {% endif %}
-    {% if is_owner %}
-
-    <button
-        class="btn btn-success"
-        data-bs-toggle="modal"
-        data-bs-target="#inviteModal">
-
-        Invite Member
-
-    </button>
-
-    {% endif %}
-
-    {% if is_owner %}
-
-    <form
-        method="POST"
-        action="{% url 'delete-wall' wall.id %}">
-
-        {% csrf_token %}
-
+    <!-- Buttons -->
+    <div class="d-flex gap-2">
+        {% if can_edit %}
         <button
-            type="submit"
-            class="btn btn-danger">
+            class="btn btn-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#addNoteModal">
+            + Add Note
+        </button>
+        {% endif %}
 
-            Delete Wall
-
+        {% if is_owner %}
+        <button
+            class="btn btn-success"
+            data-bs-toggle="modal"
+            data-bs-target="#inviteModal">
+            Invite Member
         </button>
 
-    </form>
+        <form
+            method="POST"
+            action="{% url 'delete-wall' wall.id %}">
+            {% csrf_token %}
+            <button
+                type="submit"
+                class="btn btn-danger">
+                Delete Wall
+            </button>
+        </form>
+        {% endif %}
+    </div>
 
-    {% endif %}
+    <!-- Members (same row, right-aligned) -->
+    <div>
+        <small class="text-muted">Members:</small>
+        <small>{{ wall.owner.username }} (owner)</small>
+        {% for member in members %}
+            <small>, {{ member.user.username }} ({{ member.role }})</small>
+        {% endfor %}
+    </div>
 
 </div>
 
@@ -99,21 +97,10 @@
                         name="color"
                         class="form-select">
 
-                        <option value="yellow">
-                            Yellow
-                        </option>
-
-                        <option value="pink">
-                            Pink
-                        </option>
-
-                        <option value="lightblue">
-                            Blue
-                        </option>
-
-                        <option value="lightgreen">
-                            Green
-                        </option>
+                        <option value="yellow">Yellow</option>
+                        <option value="pink">Pink</option>
+                        <option value="lightblue">Blue</option>
+                        <option value="lightgreen">Green</option>
 
                     </select>
 
@@ -125,17 +112,13 @@
                         type="button"
                         class="btn btn-secondary"
                         data-bs-dismiss="modal">
-
                         Close
-
                     </button>
 
                     <button
                         type="submit"
                         class="btn btn-primary">
-
                         Add Note
-
                     </button>
 
                 </div>
@@ -147,6 +130,7 @@
     </div>
 
 </div>
+
 <div
     class="modal fade"
     id="inviteModal"
@@ -186,13 +170,8 @@
                         name="role"
                         class="form-select">
 
-                        <option value="viewer">
-                            Viewer
-                        </option>
-
-                        <option value="editor">
-                            Editor
-                        </option>
+                        <option value="viewer">Viewer</option>
+                        <option value="editor">Editor</option>
 
                     </select>
 
@@ -204,9 +183,7 @@
                         type="submit"
                         name="invite_member"
                         class="btn btn-success">
-
                         Invite
-
                     </button>
 
                 </div>
@@ -218,7 +195,6 @@
     </div>
 
 </div>
-
 
 <hr>
 
@@ -235,14 +211,11 @@
         <div
             class="note"
             data-note-id="{{ note.id }}"
-
             style="
                 width:200px;
                 position:absolute;
-
                 left:{{ note.x_position }}px;
                 top:{{ note.y_position }}px;
-
                 background-color:{{ note.color }};
                 cursor:grab;
             ">
@@ -270,9 +243,7 @@
 <a
     href="{% url 'home' %}"
     class="btn btn-secondary">
-
     Back
-
 </a>
 
 {% endblock %}
@@ -288,67 +259,37 @@ interact('.note').draggable({
 
         move(event) {
 
-            const target =
-                event.target;
+            const target = event.target;
 
-            let left =
-                parseFloat(
-                    target.style.left
-                ) || 0;
-
-            let top =
-                parseFloat(
-                    target.style.top
-                ) || 0;
+            let left = parseFloat(target.style.left) || 0;
+            let top = parseFloat(target.style.top) || 0;
 
             left += event.dx;
             top += event.dy;
 
-            target.style.left =
-                `${left}px`;
-
-            target.style.top =
-                `${top}px`;
+            target.style.left = `${left}px`;
+            target.style.top = `${top}px`;
         },
 
         end(event) {
 
-            const target =
-                event.target;
+            const target = event.target;
+            const noteId = target.dataset.noteId;
+            const left = parseFloat(target.style.left);
+            const top = parseFloat(target.style.top);
 
-            const noteId =
-                target.dataset.noteId;
-
-            const left =
-                parseFloat(
-                    target.style.left
-                );
-
-            const top =
-                parseFloat(
-                    target.style.top
-                );
-
-            fetch(
-                '/notes/update-position/',
-                {
-                    method: 'POST',
-
-                    headers: {
-                        'Content-Type':
-                            'application/json',
-
-                        'X-CSRFToken':
-                            '{{ csrf_token }}'
-                    },
-
-                    body: JSON.stringify({
-                        note_id: noteId,
-                        x: left,
-                        y: top
-                    })
-                }
-            );
+            fetch('/notes/update-position/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({
+                    note_id: noteId,
+                    x: left,
+                    y: top
+                })
+            });
         }
     }
 });
