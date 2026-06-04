@@ -49,7 +49,8 @@ def wall_detail(request, pk):
 
     wall = get_object_or_404(
         Wall,
-        pk=pk
+        pk=pk,
+        owner=request.user
     )
     if request.method == 'POST':
 

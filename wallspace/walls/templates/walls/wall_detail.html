@@ -5,26 +5,122 @@
 
 <h2>{{ wall.title }}</h2>
 
-<hr>
-
-<form method="POST">
-    {% csrf_token %}
-
-    {{ form|crispy }}
+<div class="d-flex gap-2 mb-3">
 
     <button
         class="btn btn-primary"
-        type="submit">
+        data-bs-toggle="modal"
+        data-bs-target="#addNoteModal">
 
-        Add Note
+        + Add Note
 
     </button>
-</form>
+
+    <button class="btn btn-danger">
+        Delete Wall
+    </button>
+
+</div>
+<div
+    class="modal fade"
+    id="addNoteModal"
+    tabindex="-1">
+
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title">
+                    Add Note
+                </h5>
+
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <div class="modal-body">
+
+                    <input
+                        type="text"
+                        name="title"
+                        class="form-control mb-3"
+                        placeholder="Title">
+
+                    <textarea
+                        name="content"
+                        class="form-control mb-3"
+                        placeholder="Write your note..."
+                        rows="4">
+                    </textarea>
+
+                    <select
+                        name="color"
+                        class="form-select">
+
+                        <option value="yellow">
+                            Yellow
+                        </option>
+
+                        <option value="pink">
+                            Pink
+                        </option>
+
+                        <option value="lightblue">
+                            Blue
+                        </option>
+
+                        <option value="lightgreen">
+                            Green
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal">
+
+                        Close
+
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary">
+
+                        Add Note
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
 
 <hr>
 
 <div
-    class="border rounded p-4"
+    class="wall-board p-4"
     style="
         height:700px;
         position:relative;
@@ -34,7 +130,7 @@
     {% for note in notes %}
 
         <div
-            class="card p-2 note"
+            class="note"
             data-note-id="{{ note.id }}"
 
             style="
@@ -48,13 +144,13 @@
                 cursor:grab;
             ">
 
-            <strong>
+            <div class="note-title">
                 {{ note.title }}
-            </strong>
+            </div>
 
-            <p>
+            <div class="note-content">
                 {{ note.content }}
-            </p>
+            </div>
 
         </div>
 
