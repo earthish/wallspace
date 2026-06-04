@@ -34,6 +34,11 @@ class WallMember(models.Model):
         choices=ROLE_CHOICES,
         default="viewer"
     )
+    role = models.CharField(
+        max_length=10,
+        choices=ROLE_CHOICES,
+        default="viewer"
+    )
 
     class Meta:
         unique_together=("wall","user")

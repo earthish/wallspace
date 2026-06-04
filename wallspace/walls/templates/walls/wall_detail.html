@@ -16,11 +16,26 @@
 
     </button>
 
+    {% if is_owner %}
+
+    <button
+        class="btn btn-success"
+        data-bs-toggle="modal"
+        data-bs-target="#inviteModal">
+
+        Invite Member
+
+    </button>
+
+    {% endif %}
+
     <button class="btn btn-danger">
         Delete Wall
     </button>
 
 </div>
+
+
 <div
     class="modal fade"
     id="addNoteModal"
@@ -43,18 +58,6 @@
                 </button>
 
             </div>
-            {% if is_owner %}
-
-            <button
-                class="btn btn-success"
-                data-bs-toggle="modal"
-                data-bs-target="#inviteModal">
-
-                Invite Member
-
-            </button>
-
-            {% endif %}
 
             <form method="POST">
 
@@ -115,6 +118,77 @@
                         class="btn btn-primary">
 
                         Add Note
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+<div
+    class="modal fade"
+    id="inviteModal"
+    tabindex="-1">
+
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title">
+                    Invite Member
+                </h5>
+
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <div class="modal-body">
+
+                    <input
+                        type="text"
+                        name="username"
+                        class="form-control mb-3"
+                        placeholder="Enter username">
+
+                    <select
+                        name="role"
+                        class="form-select">
+
+                        <option value="viewer">
+                            Viewer
+                        </option>
+
+                        <option value="editor">
+                            Editor
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button
+                        type="submit"
+                        name="invite_member"
+                        class="btn btn-success">
+
+                        Invite
 
                     </button>
 

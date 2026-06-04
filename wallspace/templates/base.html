@@ -11,18 +11,86 @@
           rel="stylesheet">
 </head>
 
-<body class="container mt-5">
+<body>
 
-    {% if messages %}
-        {% for message in messages %}
-            <div class="alert alert-success">
-                {{ message }}
+    <nav
+        class="navbar navbar-expand-lg navbar-dark bg-dark">
+
+        <div class="container">
+
+            <a
+                class="navbar-brand"
+                href="{% url 'home' %}">
+
+                WallSpace
+
+            </a>
+
+            <div
+                class="ms-auto d-flex gap-2 align-items-center">
+
+                {% if user.is_authenticated %}
+
+                    <span class="text-light">
+                        Hi, {{ user.username }}
+                    </span>
+
+                    <form
+                        method="POST"
+                        action="{% url 'logout' %}">
+
+                        {% csrf_token %}
+
+                        <button
+                            type="submit"
+                            class="btn btn-danger btn-sm">
+
+                            Logout
+
+                        </button>
+
+                    </form>
+
+                {% else %}
+
+                    <a
+                        href="{% url 'login' %}"
+                        class="btn btn-outline-light">
+
+                        Login
+
+                    </a>
+
+                    <a
+                        href="{% url 'register' %}"
+                        class="btn btn-primary">
+
+                        Register
+
+                    </a>
+
+                {% endif %}
+
             </div>
-        {% endfor %}
-    {% endif %}
 
-    {% block content %}
-    {% endblock %}
+        </div>
+
+    </nav>
+
+    <div class="container mt-4">
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-success">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        {% block content %}
+        {% endblock %}
+
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
 

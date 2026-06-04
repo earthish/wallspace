@@ -2,7 +2,7 @@ import random
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
-
+from django.contrib.auth.models import User
 from .models import Wall, WallMember
 from .forms import WallForm
 from notes.forms import NoteForm
@@ -72,6 +72,40 @@ def wall_detail(request, pk):
 
     if request.method == 'POST':
 
+        # Invite member logic
+        if "invite_member" in request.POST:
+
+            username = request.POST.get(
+                "username"
+            )
+
+            role = request.POST.get(
+                "role"
+            )
+
+            try:
+
+                user = User.objects.get(
+                    username=username
+                )
+
+                WallMember.objects.get_or_create(
+                    wall=wall,
+                    user=user,
+                    defaults={
+                        "role": role
+                    }
+                )
+
+            except User.DoesNotExist:
+                pass
+
+            return redirect(
+                'wall-detail',
+                pk=wall.pk
+            )
+
+        # Add note logic
         form = NoteForm(request.POST)
 
         if form.is_valid():
@@ -79,7 +113,7 @@ def wall_detail(request, pk):
             note = form.save(
                 commit=False
             )
-            
+
             note.wall = wall
             note.creator = request.user
             note.x_position = random.randint(50, 600)
@@ -90,7 +124,6 @@ def wall_detail(request, pk):
                 'wall-detail',
                 pk=wall.pk
             )
-
     else:
 
         form = NoteForm()
