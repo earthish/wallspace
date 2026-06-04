@@ -14,27 +14,56 @@
     </button>
 </form>
 
-<hr>
+<h3>My Walls 🌿</h3>
 
-{% for wall in walls %}
+{% for wall in owned_walls %}
 
 <div class="card mb-3 p-3">
+
     <h4>
-    <a href="{% url 'wall-detail' wall.id %}">
-        {{ wall.title }}
-    </a>
-</h4>
+        <a href="{% url 'wall-detail' wall.id %}">
+            {{ wall.title }}
+        </a>
+    </h4>
 
     <small>
         Created:
         {{ wall.created_at }}
     </small>
+
 </div>
 
 {% empty %}
 
-<p>No walls yet.</p>
+<p>No personal walls yet.</p>
 
 {% endfor %}
 
+
+<hr class="my-4">
+
+
+<h3>Shared With Me 🤝</h3>
+
+{% for wall in shared_walls %}
+
+<div class="card mb-3 p-3">
+
+    <h4>
+        <a href="{% url 'wall-detail' wall.id %}">
+            {{ wall.title }}
+        </a>
+    </h4>
+
+    <small>
+        Shared workspace
+    </small>
+
+</div>
+
+{% empty %}
+
+<p>No shared walls yet.</p>
+
+{% endfor %}
 {% endblock %}

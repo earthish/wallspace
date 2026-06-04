@@ -35,13 +35,13 @@ def home(request):
     )
     shared_walls = Wall.objects.filter(
     members__user=request.user
+    ).exclude(
+        owner=request.user
     )
-    walls = (
-        owned_walls | shared_walls
-    ).distinct()
 
     context={
-        'walls':walls,
+        'owned_walls':owned_walls,
+        'shared_walls':shared_walls,
         'form':form
     }
 
@@ -60,10 +60,17 @@ def wall_detail(request, pk):
     is_owner = (
         wall.owner == request.user
     )
-    is_member = WallMember.objects.filter(
+    member = WallMember.objects.filter(
         wall=wall,
         user=request.user
-    ).exists()
+    ).first()
+
+    is_member = member is not None
+
+    can_edit = is_owner or (
+        member and
+        member.role == "editor"
+    )
 
     if not is_owner and not is_member:
         return redirect("home")
@@ -104,6 +111,11 @@ def wall_detail(request, pk):
                 'wall-detail',
                 pk=wall.pk
             )
+        if not can_edit:
+            return redirect(
+                'wall-detail',
+                pk=wall.pk
+            )
 
         # Add note logic
         form = NoteForm(request.POST)
@@ -132,7 +144,8 @@ def wall_detail(request, pk):
     'wall': wall,
     'form': form,
     'notes': wall.notes.all(),
-    'is_owner': is_owner
+    'is_owner': is_owner,
+    'can_edit': can_edit
     }
 
     return render(
