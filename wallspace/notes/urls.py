@@ -7,4 +7,8 @@ urlpatterns = [
         views.update_position,
         name='update-position'
     ),
+    path('delete/<int:note_id>/',
+    views.delete_note,
+    name='delete-note'
+    ),
 ]

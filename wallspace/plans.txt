@@ -1,0 +1,30 @@
+Notes system
+✅ Create note
+✅ Drag note
+✅ Save position
+❌ Edit note
+❌ Delete note
+❌ Resize note (optional)
+❌ Pin note
+Collaboration
+✅ Invite member
+✅ Viewer/editor split
+❌ Remove member
+❌ Change role
+❌ Show members in wall
+❌ Shared wall labels
+
+Example:
+
+Study Wall
+
+Members:
+Prithvish (Owner)
+johndoe (Editor)
+alice (Viewer)
+Permissions
+✅ Viewer read-only
+✅ Editor drag
+❌ Editor edit note
+❌ Editor delete note
+❌ Prevent viewers from editing through backend everywhere

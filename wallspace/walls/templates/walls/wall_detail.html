@@ -279,8 +279,46 @@
                 cursor:grab;
             ">
 
-            <div class="note-title">
-                {{ note.title }}
+            <div
+                class="d-flex justify-content-between align-items-start mb-2">
+
+                <div class="note-title">
+                    {{ note.title }}
+                </div>
+
+                {% if can_edit %}
+
+                <div
+                    class="d-flex gap-1">
+
+                    <button
+                        class="btn btn-sm btn-outline-secondary p-0 px-1">
+
+                        ✏
+
+                    </button>
+
+                    <form
+                        method="POST"
+                        action="{% url 'delete-note' note.id %}"
+                        style="display:inline;">
+
+                        {% csrf_token %}
+
+                        <button
+                            type="submit"
+                            class="btn btn-sm btn-outline-danger p-0 px-1">
+
+                            ×
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+                {% endif %}
+
             </div>
 
             <div class="note-content">
