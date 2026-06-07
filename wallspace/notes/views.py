@@ -95,3 +95,58 @@ def delete_note(
         'wall-detail',
         pk=wall.id
     )
+
+@login_required
+def edit_note(
+    request,
+    note_id
+):
+
+    note = get_object_or_404(
+        Note,
+        id=note_id
+    )
+
+    wall = note.wall
+
+    is_owner = (
+        wall.owner == request.user
+    )
+
+    member = WallMember.objects.filter(
+        wall=wall,
+        user=request.user
+    ).first()
+
+    can_edit = is_owner or (
+        member and
+        member.role == "editor"
+    )
+
+    if not can_edit:
+
+        return redirect(
+            'wall-detail',
+            pk=wall.id
+        )
+
+    if request.method == "POST":
+
+        note.title = request.POST.get(
+            "title"
+        )
+
+        note.content = request.POST.get(
+            "content"
+        )
+
+        note.color = request.POST.get(
+            "color"
+        )
+
+        note.save()
+
+    return redirect(
+        'wall-detail',
+        pk=wall.id
+    )
