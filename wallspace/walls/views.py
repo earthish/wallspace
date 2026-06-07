@@ -206,3 +206,38 @@ def remove_member(
         'wall-detail',
         pk=wall.id
     )
+
+
+@login_required
+def toggle_role(
+    request,
+    wall_id,
+    member_id
+):
+
+    wall = get_object_or_404(
+        Wall,
+        id=wall_id,
+        owner=request.user
+    )
+
+    member = get_object_or_404(
+        WallMember,
+        id=member_id,
+        wall=wall
+    )
+
+    if member.role == "viewer":
+
+        member.role = "editor"
+
+    else:
+
+        member.role = "viewer"
+
+    member.save()
+
+    return redirect(
+        'wall-detail',
+        pk=wall.id
+    )

@@ -8,5 +8,8 @@ urlpatterns = [
     path('wall/<int:wall_id>/remove-member/<int:member_id>/',
     views.remove_member,
     name='remove-member'),
+    path('wall/<int:wall_id>/toggle-role/<int:member_id>/',
+    views.toggle_role,
+    name='toggle-role'),
 
 ]

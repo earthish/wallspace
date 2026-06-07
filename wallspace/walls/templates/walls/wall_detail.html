@@ -63,6 +63,27 @@
 
                 <form
                     method="POST"
+                    action="{% url 'toggle-role' wall.id member.id %}"
+                    style="display:inline;">
+
+                    {% csrf_token %}
+
+                    <button
+                        type="submit"
+                        class="btn btn-sm btn-outline-primary p-0 px-1">
+
+                        {% if member.role == "viewer" %}
+                            ↑ Editor
+                        {% else %}
+                            ↓ Viewer
+                        {% endif %}
+
+                    </button>
+
+                </form>
+
+                <form
+                    method="POST"
                     action="{% url 'remove-member' wall.id member.id %}"
                     style="display:inline;">
 
