@@ -150,3 +150,63 @@ def edit_note(
         'wall-detail',
         pk=wall.id
     )
+
+@login_required
+def update_size(request):
+
+    if request.method == "POST":
+
+        data = json.loads(
+            request.body
+        )
+
+        note = get_object_or_404(
+            Note,
+            id=data["note_id"]
+        )
+
+        wall = note.wall
+
+        is_owner = (
+            wall.owner == request.user
+        )
+
+        member = WallMember.objects.filter(
+            wall=wall,
+            user=request.user
+        ).first()
+
+        can_edit = is_owner or (
+            member and
+            member.role == "editor"
+        )
+
+        if not can_edit:
+
+            return JsonResponse(
+                {
+                    "error":
+                    "Permission denied"
+                },
+                status=403
+            )
+
+        note.width = data["width"]
+        note.height = data["height"]
+
+        note.save()
+
+        return JsonResponse(
+            {
+                "status":
+                "success"
+            }
+        )
+
+    return JsonResponse(
+        {
+            "error":
+            "Invalid request"
+        },
+        status=400
+    )

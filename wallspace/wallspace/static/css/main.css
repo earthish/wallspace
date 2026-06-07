@@ -10,38 +10,46 @@
 
 
 .note {
-    width: 220px;
 
-    position: absolute;
+    padding: 14px;
 
-    border-radius: 12px;
+    border-radius: 14px;
 
     box-shadow:
-        0 4px 10px rgba(0,0,0,0.15);
-
-    padding: 15px;
+        0 4px 10px
+        rgba(0,0,0,0.12);
 
     transition:
-        transform 0.15s ease;
-
-    user-select: none;
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
 }
 
 
 .note:hover {
-    transform: scale(1.02);
+
+    transform:
+        scale(1.02);
+
+    box-shadow:
+        0 6px 14px
+        rgba(0,0,0,0.18);
 }
 
 
+
 .note-title {
-    font-weight: bold;
-    font-size: 18px;
+
+    font-size: 1rem;
+
+    font-weight: 700;
 
     margin-bottom: 8px;
 }
 
 
+
+
 .note-content {
-    font-size: 15px;
+    font-size: 0.92rem;
     line-height: 1.4;
 }

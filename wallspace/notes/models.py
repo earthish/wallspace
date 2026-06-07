@@ -44,6 +44,15 @@ class Note(models.Model):
     y_position = models.IntegerField(
         default=50
     )
+    width = models.IntegerField(
+    default=220
+    )
+
+    height = models.IntegerField(
+    default=120
+    )
+
+
 
     created_at = models.DateTimeField(
         auto_now_add=True
@@ -52,6 +61,7 @@ class Note(models.Model):
     updated_at = models.DateTimeField(
         auto_now=True
     )
+
 
     def __str__(self):
         return f'{self.creator} note'

@@ -271,7 +271,10 @@
             class="note"
             data-note-id="{{ note.id }}"
             style="
-                width:200px;
+                width:{{ note.width }}px;
+                height:{{ note.height }}px;
+                resize:both;
+                overflow:auto;
                 position:absolute;
                 left:{{ note.x_position }}px;
                 top:{{ note.y_position }}px;
@@ -282,7 +285,7 @@
             <div
                 class="d-flex justify-content-between align-items-start mb-2">
 
-                <div class="note-title">
+                <div class="note-title fw-bold fs-6">
                     {{ note.title }}
                 </div>
 
@@ -460,37 +463,105 @@ interact('.note').draggable({
 
             const target = event.target;
 
-            let left = parseFloat(target.style.left) || 0;
-            let top = parseFloat(target.style.top) || 0;
+            let left =
+                parseFloat(
+                    target.style.left
+                ) || 0;
+
+            let top =
+                parseFloat(
+                    target.style.top
+                ) || 0;
 
             left += event.dx;
             top += event.dy;
 
-            target.style.left = `${left}px`;
-            target.style.top = `${top}px`;
+            target.style.left =
+                `${left}px`;
+
+            target.style.top =
+                `${top}px`;
         },
 
         end(event) {
 
-            const target = event.target;
-            const noteId = target.dataset.noteId;
-            const left = parseFloat(target.style.left);
-            const top = parseFloat(target.style.top);
+            const target =
+                event.target;
 
-            fetch('/notes/update-position/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': '{{ csrf_token }}'
-                },
-                body: JSON.stringify({
-                    note_id: noteId,
-                    x: left,
-                    y: top
-                })
-            });
+            const noteId =
+                target.dataset.noteId;
+
+            const left =
+                parseFloat(
+                    target.style.left
+                );
+
+            const top =
+                parseFloat(
+                    target.style.top
+                );
+
+            fetch(
+                '/notes/update-position/',
+                {
+                    method: 'POST',
+
+                    headers: {
+                        'Content-Type':
+                            'application/json',
+
+                        'X-CSRFToken':
+                            '{{ csrf_token }}'
+                    },
+
+                    body: JSON.stringify({
+                        note_id: noteId,
+                        x: left,
+                        y: top
+                    })
+                }
+            );
         }
     }
+});
+
+
+document
+.querySelectorAll('.note')
+.forEach(note => {
+
+    note.addEventListener(
+        'mouseup',
+        () => {
+
+            fetch(
+                '/notes/update-size/',
+                {
+                    method: 'POST',
+
+                    headers: {
+                        'Content-Type':
+                            'application/json',
+
+                        'X-CSRFToken':
+                            '{{ csrf_token }}'
+                    },
+
+                    body: JSON.stringify({
+
+                        note_id:
+                            note.dataset.noteId,
+
+                        width:
+                            note.offsetWidth,
+
+                        height:
+                            note.offsetHeight
+                    })
+                }
+            );
+        }
+    );
 });
 
 </script>

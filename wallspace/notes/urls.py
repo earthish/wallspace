@@ -19,4 +19,10 @@ urlpatterns = [
     name='edit-note'
     ),
 
+    path(
+    'update-size/',
+    views.update_size,
+    name='update-size'
+    ),
+
 ]
