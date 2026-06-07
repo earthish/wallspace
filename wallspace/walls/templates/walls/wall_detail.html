@@ -44,7 +44,7 @@
         <small class="text-muted">Members:</small>
         <small>{{ wall.owner.username }} (owner)</small>
         {% for member in members %}
-            <small>, {{ member.user.username }} ({{ member.role }})</small>
+            <small>, {{ member.user }} ({{ member.role }})</small>
         {% endfor %}
     </div>
 
