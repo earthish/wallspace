@@ -180,3 +180,29 @@ def delete_wall(request, pk):
         "wall-detail",
         pk=pk
     )
+
+@login_required
+def remove_member(
+    request,
+    wall_id,
+    member_id
+):
+
+    wall = get_object_or_404(
+        Wall,
+        id=wall_id,
+        owner=request.user
+    )
+
+    member = get_object_or_404(
+        WallMember,
+        id=member_id,
+        wall=wall
+    )
+
+    member.delete()
+
+    return redirect(
+        'wall-detail',
+        pk=wall.id
+    )

@@ -41,11 +41,49 @@
 
     <!-- Members (same row, right-aligned) -->
     <div>
-        <small class="text-muted">Members:</small>
-        <small>{{ wall.owner.username }} (owner)</small>
+
+        <small class="text-muted">
+            Members:
+        </small>
+
+        <small>
+            {{ wall.owner.username }}
+            (owner)
+        </small>
+
         {% for member in members %}
-            <small>, {{ member.user }} ({{ member.role }})</small>
+
+            <small>
+
+                ,
+                {{ member.user }}
+                ({{ member.role }})
+
+                {% if is_owner %}
+
+                <form
+                    method="POST"
+                    action="{% url 'remove-member' wall.id member.id %}"
+                    style="display:inline;">
+
+                    {% csrf_token %}
+
+                    <button
+                        type="submit"
+                        class="btn btn-sm btn-outline-danger p-0 px-1">
+
+                        ×
+
+                    </button>
+
+                </form>
+
+                {% endif %}
+
+            </small>
+
         {% endfor %}
+
     </div>
 
 </div>
