@@ -270,6 +270,7 @@
         <div
             class="note"
             data-note-id="{{ note.id }}"
+            data-color="{{ note.color }}"
             style="
                 width:{{ note.width }}px;
                 height:{{ note.height }}px;
@@ -278,7 +279,6 @@
                 position:absolute;
                 left:{{ note.x_position }}px;
                 top:{{ note.y_position }}px;
-                background-color:{{ note.color }};
                 cursor:grab;
             ">
 
