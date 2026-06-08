@@ -130,6 +130,8 @@ def wall_detail(request, pk):
             note.creator = request.user
             note.x_position = random.randint(50, 600)
             note.y_position = random.randint(50, 400)
+            note.width = 220
+            note.height = 120
             note.save()
 
             return redirect(
