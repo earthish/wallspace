@@ -25,16 +25,51 @@
     <div class="walls-column">
         <h2 class="walls-heading">My Walls</h2>
         {% for wall in owned_walls %}
-        <div class="pixel-card mb-3 wall-card">
-            <a href="{% url 'wall-detail' wall.id %}" class="wall-link">
-                {{ wall.title }}
-            </a>
-            <div class="wall-meta">
-                created: {{ wall.created_at|date:"M j, Y" }}
+        <div class="pixel-card mb-3 wall-card d-flex justify-content-between align-items-center">
+            <div>
+                <a href="{% url 'wall-detail' wall.id %}" class="wall-link">
+                    {{ wall.title }}
+                </a>
+                <div class="wall-meta">
+                    created: {{ wall.created_at|date:"M j, Y" }}
+                </div>
+            </div>
+            <div class="d-flex gap-2">
+                <button
+                    class="pixel-icon-btn"
+                    data-bs-toggle="modal"
+                    data-bs-target="#renameModal{{ wall.id }}"
+                    title="Rename">
+                    ✏
+                </button>
+                <form method="POST" action="{% url 'delete-wall' wall.id %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="pixel-icon-btn danger" title="Delete">🗑</button>
+                </form>
             </div>
         </div>
-        {% empty %}
-        <p class="pixel-empty">no walls yet.</p>
+
+        <!-- Rename Modal -->
+        <div class="modal fade" id="renameModal{{ wall.id }}" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Rename Wall</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <form method="POST" action="{% url 'rename-wall' wall.id %}">
+                        {% csrf_token %}
+                        <div class="modal-body">
+                            <label class="pixel-label">New Name</label>
+                            <input type="text" name="title" class="pixel-input" value="{{ wall.title }}">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
         {% endfor %}
     </div>
 
@@ -48,13 +83,11 @@
                 {{ wall.title }}
             </a>
             <div class="wall-meta">
-                shared workspace
+                shared by {{ wall.owner.username }}
             </div>
         </div>
-        {% empty %}
-        <p class="pixel-empty">no shared walls yet.</p>
         {% endfor %}
-    </div>
+            </div>
 
 </div>
 

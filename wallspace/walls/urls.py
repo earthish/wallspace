@@ -11,5 +11,6 @@ urlpatterns = [
     path('wall/<int:wall_id>/toggle-role/<int:member_id>/',
     views.toggle_role,
     name='toggle-role'),
+    path('wall/<int:pk>/rename/', views.rename_wall, name='rename-wall'),
 
 ]

@@ -375,3 +375,33 @@ input[type="email"]:focus {
     padding: 0;
     white-space: pre-wrap;
 }
+
+.pixel-icon-btn {
+    font-size: 16px;
+    background: rgba(240, 228, 204, 0.9);
+    border: 2px solid #7a5c3a;
+    box-shadow: 2px 2px 0 #7a5c3a;
+    border-radius: 0;
+    cursor: pointer;
+    padding: 2px 8px;
+    transition: transform 0.1s;
+}
+
+.pixel-icon-btn:hover {
+    transform: translate(-1px, -1px);
+    box-shadow: 3px 3px 0 #7a5c3a;
+}
+
+.pixel-icon-btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: none;
+}
+
+.pixel-icon-btn.danger {
+    border-color: #c97c5d;
+    box-shadow: 2px 2px 0 #c97c5d;
+}
+
+.pixel-icon-btn.danger:hover {
+    box-shadow: 3px 3px 0 #c97c5d;
+}

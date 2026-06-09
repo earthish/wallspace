@@ -243,3 +243,13 @@ def toggle_role(
         'wall-detail',
         pk=wall.id
     )
+
+@login_required
+def rename_wall(request, pk):
+    wall = get_object_or_404(Wall, pk=pk, owner=request.user)
+    if request.method == "POST":
+        title = request.POST.get("title", "").strip()
+        if title:
+            wall.title = title
+            wall.save()
+    return redirect("home")
