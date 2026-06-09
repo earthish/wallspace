@@ -1,9 +1,86 @@
+/* ── base ── */
+body {
+    background-color: #bfb293;
+    color: #2a1a0a;
+}
+ 
 h2 {
     font-family: 'Press Start 2P', monospace;
     font-size: 14px;
     color: #3a2e1e;
     margin-bottom: 1rem;
 }
+ 
+.walls-heading {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 15px;
+    color: #7a5c3a;
+    margin-bottom: 1rem;
+    letter-spacing: 1px;
+}
+ 
+h3 {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+    color: #3a2e1e;
+    margin-bottom: 1rem;
+}
+ 
+/* ── navbar ── */
+.navbar {
+    background-color: #3a2e1e !important;
+    border-bottom: 3px solid #c8a84b;
+}
+ 
+.navbar-brand {
+    font-family: 'Press Start 2P', monospace !important;
+    font-size: 13px !important;
+    color: #FFF8EC !important;
+    font-weight: 400 !important;
+}
+ 
+.navbar span,
+.navbar a:not(.navbar-brand) {
+    font-family: 'VT323', monospace !important;
+    font-size: 22px !important;
+    color: #FFF8EC !important;
+}
+ 
+/* ── buttons ── */
+.btn {
+    font-family: 'VT323', monospace;
+    font-size: 20px;
+    border-radius: 0 !important;
+    border: 2px solid #3a2200 !important;
+    box-shadow: 2px 2px 0 #3a2200;
+    transition: transform 0.1s, box-shadow 0.1s;
+    line-height: 1.2;
+}
+ 
+.btn:hover {
+    filter: brightness(1.1);
+    transform: translate(-1px, -1px);
+    box-shadow: 3px 3px 0 #3a2200;
+}
+ 
+.btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: none !important;
+}
+ 
+.btn-primary   { background-color: #7aaa5c !important; color: #1a0f00 !important; }
+.btn-primary:hover { background-color: #6c9652 !important; }
+ 
+.btn-success   { background-color: #5c8a9a !important; color: #1a0f00 !important; }
+.btn-success:hover { background-color: #4a7a8a !important; }
+ 
+.btn-danger    { background-color: #c97c5d !important; color: #1a0f00 !important; }
+.btn-danger:hover  { background-color: #b86c4d !important; }
+ 
+.btn-secondary { background-color: #a89070 !important; color: #1a0f00 !important; }
+.btn-secondary:hover { background-color: #987860 !important; }
+ 
+/* ── wall board ── */
 .wall-board {
     background-color: #c8b89a;
     background-image:
@@ -14,96 +91,143 @@ h2 {
     box-shadow: 4px 4px 0 #7a5c3a;
     border-radius: 0 !important;
 }
-
-
+ 
+/* ── notes ── */
 .note {
     border-radius: 0 !important;
     border: 2px solid #5a3e28;
     box-shadow: 3px 3px 0 #5a3e28;
     transition: transform 0.1s, box-shadow 0.1s;
 }
-
-
+ 
 .note:hover {
     transform: translate(-2px, -2px);
     box-shadow: 5px 5px 0 #5a3e28;
 }
-
-
-
+ 
 .note-title {
     font-family: 'Press Start 2P', monospace;
     font-size: 7px;
     margin-bottom: 8px;
     color: #2a1a0a;
 }
-
+ 
 .note-content {
     font-family: 'VT323', monospace;
     font-size: 18px;
     color: #2a1a0a;
 }
-body {
-    background-color: #f5ede0;
-}
-
-
-.navbar {
-    background-color: #3a2e1e !important;
-    border-bottom: 3px solid #c8a84b;
-    font-family: 'Press Start 2P', monospace;
-    font-size: 9px;
-}
-
-
-.navbar-brand {
-
-    font-weight: 600;
-
-    font-size: 1.8rem;
-
-    color: #FFF8EC !important;
-}
-
-
-.navbar span {
-
-    color:
-        #FFF8EC !important;
-}
-
-.btn {
-    font-family: 'Press Start 2P', monospace;
-    font-size: 7px;
-    border-radius: 0 !important;
-    border: 2px solid #3a2200 !important;
-    box-shadow: 2px 2px 0 #3a2200;
+ 
+.note[data-color="yellow"]    { background-color: #F7E7A9 !important; }
+.note[data-color="pink"]      { background-color: #E8B4C1 !important; }
+.note[data-color="blue"],
+.note[data-color="lightblue"] { background-color: #B9D8E8 !important; }
+.note[data-color="green"],
+.note[data-color="lightgreen"]{ background-color: #BFD8B8 !important; }
+ 
+/* ── home page ── */
+.pixel-card {
+    background-color: #f0e4cc;
+    border: 2px solid #7a5c3a;
+    box-shadow: 3px 3px 0 #7a5c3a;
+    border-radius: 0;
+    padding: 1rem 1.25rem;
     transition: transform 0.1s, box-shadow 0.1s;
 }
-
-.btn-primary  { background-color: #7aaa5c !important; color: #1a0f00 !important; }
-.btn-success  { background-color: #5c8a9a !important; color: #1a0f00 !important; }
-
-.btn-primary:hover {
-
-    background:
-        #6C9672 !important;
+ 
+.pixel-card:hover {
+    transform: translate(-1px, -1px);
+    box-shadow: 4px 4px 0 #7a5c3a;
 }
-
-.btn-danger   { background-color: #c97c5d !important; color: #1a0f00 !important; }
-.btn-secondary{ background-color: #a89070 !important; color: #1a0f00 !important; }
-.note[data-color="yellow"] {
-    background-color: #F7E7A9 !important;
+ 
+.pixel-section-label {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 15px;
+    color: #7a5c3a;
+    letter-spacing: 1px;
+    margin-bottom: 0.75rem;
 }
-
-.note[data-color="pink"] {
-    background-color: #E8B4C1 !important;
+ 
+.wall-link {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    color: #3a2e1e !important;
+    text-decoration: none;
+    display: block;
+    margin-bottom: 6px;
 }
-
-.note[data-color="blue"] {
-    background-color: #B9D8E8 !important;
+ 
+.wall-link:hover {
+    color: #7a5c3a !important;
+    text-decoration: none;
 }
-
-.note[data-color="green"] {
-    background-color: #BFD8B8 !important;
+ 
+.wall-meta {
+    font-family: 'VT323', monospace;
+    font-size: 16px;
+    color: #8a6a4a;
+}
+ 
+.pixel-empty {
+    font-family: 'VT323', monospace;
+    font-size: 18px;
+    color: #a08060;
+}
+ 
+.pixel-label {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px;
+    color: #5a3e28;
+    display: block;
+    margin-bottom: 6px;
+}
+ 
+.pixel-input {
+    width: 100%;
+    background-color: #fdf6e8;
+    border: 2px solid #7a5c3a;
+    box-shadow: 2px 2px 0 #7a5c3a;
+    border-radius: 0;
+    padding: 8px 10px;
+    font-family: 'VT323', monospace;
+    font-size: 18px;
+    color: #2a1a0a;
+    outline: none;
+}
+ 
+.pixel-input:focus {
+    border-color: #c8a84b;
+    box-shadow: 2px 2px 0 #c8a84b;
+}
+ 
+.pixel-divider {
+    border: none;
+    border-top: 2px dashed #b5a080;
+    margin: 1.5rem 0;
+}
+ 
+/* ── side by side walls layout ── */
+.walls-grid {
+    display: flex;
+    gap: 0;
+    align-items: flex-start;
+}
+ 
+.walls-column {
+    flex: 1;
+    min-width: 0;
+}
+ 
+.walls-divider {
+    width: 2px;
+    background: repeating-linear-gradient(
+        to bottom,
+        #b5a080 0px,
+        #b5a080 6px,
+        transparent 6px,
+        transparent 12px
+    );
+    margin: 0 1.5rem;
+    align-self: stretch;
+    min-height: 100%;
 }

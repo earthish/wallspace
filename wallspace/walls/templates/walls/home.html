@@ -1,69 +1,61 @@
 {% extends "base.html" %}
-{% load crispy_forms_tags %}
+
 {% block content %}
 
-<h2>My Walls</h2>
+<div class="pixel-card mb-4">
+    <p class="pixel-section-label">create a new wall</p>
+    <form method="POST">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label class="pixel-label">Title</label>
+            <input
+                type="text"
+                name="title"
+                class="pixel-input"
+                placeholder="enter wall name...">
+        </div>
+        <button class="btn btn-primary" type="submit">
+            Create Wall
+        </button>
+    </form>
+</div>
 
-<form method="POST" class="mb-4">
-    {% csrf_token %}
-    {{ form|crispy }}
+<div class="walls-grid">
 
-    <button class="btn btn-primary"
-            type="submit">
-        Create Wall
-    </button>
-</form>
+    <div class="walls-column">
+        <h2 class="walls-heading">My Walls</h2>
+        {% for wall in owned_walls %}
+        <div class="pixel-card mb-3 wall-card">
+            <a href="{% url 'wall-detail' wall.id %}" class="wall-link">
+                {{ wall.title }}
+            </a>
+            <div class="wall-meta">
+                created: {{ wall.created_at|date:"M j, Y" }}
+            </div>
+        </div>
+        {% empty %}
+        <p class="pixel-empty">no walls yet.</p>
+        {% endfor %}
+    </div>
 
-<h3>My Walls 🌿</h3>
+    <div class="walls-divider"></div>
 
-{% for wall in owned_walls %}
-
-<div class="card mb-3 p-3">
-
-    <h4>
-        <a href="{% url 'wall-detail' wall.id %}">
-            {{ wall.title }}
-        </a>
-    </h4>
-
-    <small>
-        Created:
-        {{ wall.created_at }}
-    </small>
+    <div class="walls-column">
+        <h2 class="walls-heading">Shared With Me</h2>
+        {% for wall in shared_walls %}
+        <div class="pixel-card mb-3 wall-card">
+            <a href="{% url 'wall-detail' wall.id %}" class="wall-link">
+                {{ wall.title }}
+            </a>
+            <div class="wall-meta">
+                shared workspace
+            </div>
+        </div>
+        {% empty %}
+        <p class="pixel-empty">no shared walls yet.</p>
+        {% endfor %}
+    </div>
 
 </div>
 
-{% empty %}
-
-<p>No personal walls yet.</p>
-
-{% endfor %}
-
-
-<hr class="my-4">
-
-
-<h3>Shared With Me 🤝</h3>
-
-{% for wall in shared_walls %}
-
-<div class="card mb-3 p-3">
-
-    <h4>
-        <a href="{% url 'wall-detail' wall.id %}">
-            {{ wall.title }}
-        </a>
-    </h4>
-
-    <small>
-        Shared workspace
-    </small>
-
-</div>
-
-{% empty %}
-
-<p>No shared walls yet.</p>
-
-{% endfor %}
 {% endblock %}
