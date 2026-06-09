@@ -118,6 +118,7 @@ h3 {
  
 .note-content {
     font-family: 'VT323', monospace;
+    white-space: pre-wrap;
     font-size: 18px;
     color: #2a1a0a;
 }
@@ -179,8 +180,8 @@ h3 {
 }
  
 .pixel-label {
-    font-family: 'Press Start 2P', monospace;
-    font-size: 7px;
+    font-family: 'VT323', monospace;
+    font-size: 22px;
     color: #5a3e28;
     display: block;
     margin-bottom: 6px;
@@ -294,4 +295,83 @@ input[type="password"]:focus,
 input[type="email"]:focus {
     border-color: #c8a84b;
     box-shadow: 2px 2px 0 #c8a84b;
+}
+
+.field-hint {
+    font-family: 'VT323', monospace;
+    font-size: 15px;
+    color: #8a6a4a;
+    margin-top: 4px;
+    margin-bottom: 0;
+}
+
+.pixel-alert {
+    font-family: 'VT323', monospace;
+    font-size: 18px;
+    color: #7a1a0a;
+    background-color: rgba(200, 80, 60, 0.15);
+    border: 2px solid #c97c5d;
+    box-shadow: 2px 2px 0 #c97c5d;
+    padding: 8px 12px;
+}
+
+.pixel-alert p {
+    font-family: 'VT323', monospace;
+    font-size: 18px;
+}
+
+
+/* ── modals ── */
+.modal-content {
+    background-color: #f0e4cc;
+    border: 2px solid #7a5c3a;
+    box-shadow: 4px 4px 0 #7a5c3a;
+    border-radius: 0;
+}
+
+.modal-header {
+    border-bottom: 2px solid #7a5c3a;
+    background-color: #e0d0b0;
+}
+
+.modal-footer {
+    border-top: 2px solid #7a5c3a;
+    background-color: #e0d0b0;
+}
+
+.modal-title {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+    color: #3a2e1e;
+}
+
+.btn-close {
+    filter: sepia(1) saturate(2) hue-rotate(330deg);
+}
+
+.form-control, .form-select, textarea {
+    font-family: 'VT323', monospace;
+    font-size: 18px;
+    background-color: #fdf6e8;
+    border: 2px solid #7a5c3a;
+    box-shadow: 2px 2px 0 #7a5c3a;
+    border-radius: 0;
+    color: #2a1a0a;
+}
+
+.form-control:focus, .form-select:focus, textarea:focus {
+    border-color: #c8a84b;
+    box-shadow: 2px 2px 0 #c8a84b;
+    background-color: #fdf6e8;
+    outline: none;
+}
+
+.form-control::placeholder, textarea::placeholder {
+    color: #a08060;
+}
+
+.note-content {
+    margin: 0;
+    padding: 0;
+    white-space: pre-wrap;
 }

@@ -1,27 +1,55 @@
 {% extends "base.html" %}
+{% block nav_buttons %}{% endblock %}
 
 {% block content %}
 
-<div class="container mt-5">
+<div class="d-flex justify-content-center align-items-center" style="min-height: 70vh;">
+    <div class="pixel-card" style="width: 440px;">
 
-    <h2>Create Account</h2>
+        <h2 class="mb-4">Create Account</h2>
 
-    <form method="POST">
+        <form method="POST">
+            {% csrf_token %}
+                {% if form.errors %}
+                    <div class="pixel-alert mb-3">
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                                <p class="mb-1">⚠ {{ error }}</p>
+                            {% endfor %}
+                        {% endfor %}
+                        {% for error in form.non_field_errors %}
+                            <p class="mb-1">⚠ {{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
 
-        {% csrf_token %}
+            <div class="mb-3">
+                <label class="pixel-label">Username</label>
+                {{ form.username }}
+                <p class="field-hint">up to 150 characters. letters, digits and @/./+/-/_ only.</p>
+            </div>
 
-        {{ form.as_p }}
+            <div class="mb-3">
+                <label class="pixel-label">Password</label>
+                {{ form.password1 }}
+                <p class="field-hint">min 8 characters. can't be too common or entirely numeric.</p>
+            </div>
 
-        <button
-            type="submit"
-            class="btn btn-primary">
+            <div class="mb-3">
+                <label class="pixel-label">Confirm Password</label>
+                {{ form.password2 }}
+                <p class="field-hint">enter the same password again.</p>
+            </div>
 
-            Register
+            <button type="submit" class="btn btn-primary mt-2">Register</button>
+        </form>
 
-        </button>
+        <p class="pixel-empty mb-0 mt-3">
+            already have an account?
+            <a href="{% url 'login' %}" class="pixel-auth-link">login here</a>
+        </p>
 
-    </form>
-
+    </div>
 </div>
 
 {% endblock %}

@@ -149,8 +149,7 @@
                         name="content"
                         class="form-control mb-3"
                         placeholder="Write your note..."
-                        rows="4">
-                    </textarea>
+                        rows="4"></textarea>
 
                     <select
                         name="color"
@@ -326,9 +325,7 @@
 
             </div>
 
-            <div class="note-content">
-                {{ note.content }}
-            </div>
+            <div class="note-content">{{ note.content }}</div>
 
         </div>
         <div
@@ -437,7 +434,7 @@
         <p>No notes yet.</p>
 
     {% endfor %}
-
+<button id="fullscreen-btn" onclick="toggleFullscreen()" title="Fullscreen">⛶</button>
 </div>
 
 <br>
@@ -452,6 +449,27 @@
 
 
 {% block scripts %}
+<script>
+    function toggleFullscreen() {
+    const board = document.querySelector('.wall-board');
+    const btn = document.getElementById('fullscreen-btn');
+    if (!document.fullscreenElement) {
+        board.requestFullscreen().then(() => {
+            btn.textContent = '✕';
+        });
+    } else {
+        document.exitFullscreen().then(() => {
+            btn.textContent = '⛶';
+        });
+    }
+}
+
+document.addEventListener('fullscreenchange', () => {
+    if (!document.fullscreenElement) {
+        document.getElementById('fullscreen-btn').textContent = '⛶';
+    }
+});
+</script>
 {% if can_edit %}
 <script>
 

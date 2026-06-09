@@ -10,6 +10,11 @@
 
         <form method="POST">
             {% csrf_token %}
+            {% if form.errors %}
+            <div class="pixel-alert mb-3">
+                <p class="mb-0">⚠ invalid username or password.</p>
+            </div>
+            {% endif %}
             {{ form.as_p }}
             <button type="submit" class="btn btn-primary mt-2">Login</button>
         </form>

@@ -134,15 +134,15 @@ def edit_note(
 
         note.title = request.POST.get(
             "title"
-        )
+        ).strip()
 
         note.content = request.POST.get(
             "content"
-        )
+        ).strip()
 
         note.color = request.POST.get(
             "color"
-        )
+        ).strip()
 
         note.save()
 
