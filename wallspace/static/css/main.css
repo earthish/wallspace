@@ -1,7 +1,8 @@
 /* ── base ── */
 body {
-    background-color: #bfb293;
+    background-color: #e8d4a0;
     color: #2a1a0a;
+    min-height: 100vh;
 }
  
 h2 {
@@ -98,6 +99,9 @@ h3 {
     border: 2px solid #5a3e28;
     box-shadow: 3px 3px 0 #5a3e28;
     transition: transform 0.1s, box-shadow 0.1s;
+
+    padding: 14px;
+    box-sizing: border-box;
 }
  
 .note:hover {
@@ -149,8 +153,8 @@ h3 {
 }
  
 .wall-link {
-    font-family: 'Press Start 2P', monospace;
-    font-size: 9px;
+    font-family: 'VT323', monospace;
+    font-size: 20px;
     color: #3a2e1e !important;
     text-decoration: none;
     display: block;
@@ -230,4 +234,20 @@ h3 {
     margin: 0 1.5rem;
     align-self: stretch;
     min-height: 100%;
+}
+.container, .container-fluid {
+    background-color: transparent !important;
+}
+
+.pixel-card {
+    background-color: rgba(240, 228, 204, 0.85);
+    backdrop-filter: blur(1px);
+}
+
+.wall-card {
+    background-color: rgba(240, 228, 204, 0.85);
+}
+
+button, input[type="submit"] {
+    font-family: 'VT323', monospace !important;
 }
