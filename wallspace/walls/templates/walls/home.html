@@ -25,29 +25,28 @@
     <div class="walls-column">
         <h2 class="walls-heading">My Walls</h2>
         {% for wall in owned_walls %}
-        <div class="pixel-card mb-3 wall-card d-flex justify-content-between align-items-center">
-            <div>
-                <a href="{% url 'wall-detail' wall.id %}" class="wall-link">
-                    {{ wall.title }}
-                </a>
-                <div class="wall-meta">
-                    created: {{ wall.created_at|date:"M j, Y" }}
+
+        <a href="{% url 'wall-detail' wall.id %}" class="wall-card-link">
+            <div class="pixel-card mb-3 wall-card d-flex justify-content-between align-items-center">
+                <div>
+                    <div class="wall-link">{{ wall.title }}</div>
+                    <div class="wall-meta">created: {{ wall.created_at|date:"M j, Y" }}</div>
+                </div>
+                <div class="d-flex gap-2" onclick="event.stopPropagation()">
+                    <button
+                        class="pixel-icon-btn"
+                        data-bs-toggle="modal"
+                        data-bs-target="#renameModal{{ wall.id }}"
+                        title="Rename">
+                        ✏
+                    </button>
+                    <form method="POST" action="{% url 'delete-wall' wall.id %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="pixel-icon-btn danger" title="Delete">🗑</button>
+                    </form>
                 </div>
             </div>
-            <div class="d-flex gap-2">
-                <button
-                    class="pixel-icon-btn"
-                    data-bs-toggle="modal"
-                    data-bs-target="#renameModal{{ wall.id }}"
-                    title="Rename">
-                    ✏
-                </button>
-                <form method="POST" action="{% url 'delete-wall' wall.id %}" style="display:inline;">
-                    {% csrf_token %}
-                    <button type="submit" class="pixel-icon-btn danger" title="Delete">🗑</button>
-                </form>
-            </div>
-        </div>
+        </a>
 
         <!-- Rename Modal -->
         <div class="modal fade" id="renameModal{{ wall.id }}" tabindex="-1">
@@ -70,6 +69,9 @@
                 </div>
             </div>
         </div>
+
+        {% empty %}
+        <p class="pixel-empty">no walls yet.</p>
         {% endfor %}
     </div>
 
@@ -78,16 +80,18 @@
     <div class="walls-column">
         <h2 class="walls-heading">Shared With Me</h2>
         {% for wall in shared_walls %}
-        <div class="pixel-card mb-3 wall-card">
-            <a href="{% url 'wall-detail' wall.id %}" class="wall-link">
-                {{ wall.title }}
-            </a>
-            <div class="wall-meta">
-                shared by {{ wall.owner.username }}
+
+        <a href="{% url 'wall-detail' wall.id %}" class="wall-card-link">
+            <div class="pixel-card mb-3 wall-card">
+                <div class="wall-link">{{ wall.title }}</div>
+                <div class="wall-meta">shared by {{ wall.owner.username }}</div>
             </div>
-        </div>
+        </a>
+
+        {% empty %}
+        <p class="pixel-empty">no shared walls yet.</p>
         {% endfor %}
-            </div>
+    </div>
 
 </div>
 

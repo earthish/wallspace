@@ -405,3 +405,13 @@ input[type="email"]:focus {
 .pixel-icon-btn.danger:hover {
     box-shadow: 3px 3px 0 #c97c5d;
 }
+
+.wall-card-link {
+    text-decoration: none;
+    display: block;
+}
+
+.wall-card-link:hover .pixel-card {
+    transform: translate(-1px, -1px);
+    box-shadow: 4px 4px 0 #7a5c3a;
+}
