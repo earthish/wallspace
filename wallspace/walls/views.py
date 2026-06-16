@@ -7,6 +7,15 @@ from .models import Wall, WallMember
 from .forms import WallForm
 from notes.forms import NoteForm
 from notes.models import Note
+
+# for api 
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from rest_framework import status
+
+from .serializers import WallSerializer
 # Create your views here.
 
 @login_required #decorator, it checks automatically if a certain condition is satisfied or not
@@ -253,3 +262,60 @@ def rename_wall(request, pk):
             wall.title = title
             wall.save()
     return redirect("home")
+
+
+class WallListCreateAPIView(APIView):
+
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+
+        owned_walls = Wall.objects.filter(
+            owner=request.user
+        )
+
+        shared_walls = Wall.objects.filter(
+            members__user=request.user
+        ).exclude(
+            owner=request.user
+        )
+
+        serializer_owned = WallSerializer(
+            owned_walls,
+            many=True
+        )
+
+        serializer_shared = WallSerializer(
+            shared_walls,
+            many=True
+        )
+
+        return Response({
+            "owned_walls":
+                serializer_owned.data,
+
+            "shared_walls":
+                serializer_shared.data
+        })
+
+    def post(self, request):
+
+        serializer = WallSerializer(
+            data=request.data
+        )
+
+        if serializer.is_valid():
+
+            serializer.save(
+                owner=request.user
+            )
+
+            return Response(
+                serializer.data,
+                status=status.HTTP_201_CREATED
+            )
+
+        return Response(
+            serializer.errors,
+            status=status.HTTP_400_BAD_REQUEST
+        )

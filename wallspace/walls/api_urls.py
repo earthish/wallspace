@@ -1,3 +1,11 @@
 from django.urls import path
-
-urlpatterns = []
+from .views import (
+    WallListCreateAPIView
+)
+urlpatterns = [
+    path(
+        '',
+        WallListCreateAPIView.as_view(),
+        name='wall-list'
+    ),
+]
