@@ -264,7 +264,8 @@ def rename_wall(request, pk):
     return redirect("home")
 
 
-class WallListCreateAPIView(APIView):
+
+class WallListAPIView(APIView):
 
     permission_classes = [IsAuthenticated]
 
@@ -298,6 +299,11 @@ class WallListCreateAPIView(APIView):
                 serializer_shared.data
         })
 
+
+class CreateWallAPIView(APIView):
+
+    permission_classes = [IsAuthenticated]
+
     def post(self, request):
 
         serializer = WallSerializer(
@@ -319,3 +325,58 @@ class WallListCreateAPIView(APIView):
             serializer.errors,
             status=status.HTTP_400_BAD_REQUEST
         )
+# class WallListCreateAPIView(APIView):
+
+#     permission_classes = [IsAuthenticated]
+
+#     def get(self, request):
+
+#         owned_walls = Wall.objects.filter(
+#             owner=request.user
+#         )
+
+#         shared_walls = Wall.objects.filter(
+#             members__user=request.user
+#         ).exclude(
+#             owner=request.user
+#         )
+
+#         serializer_owned = WallSerializer(
+#             owned_walls,
+#             many=True
+#         )
+
+#         serializer_shared = WallSerializer(
+#             shared_walls,
+#             many=True
+#         )
+
+#         return Response({
+#             "owned_walls":
+#                 serializer_owned.data,
+
+#             "shared_walls":
+#                 serializer_shared.data
+#         })
+
+#     def post(self, request):
+
+#         serializer = WallSerializer(
+#             data=request.data
+#         )
+
+#         if serializer.is_valid():
+
+#             serializer.save(
+#                 owner=request.user
+#             )
+
+#             return Response(
+#                 serializer.data,
+#                 status=status.HTTP_201_CREATED
+#             )
+
+#         return Response(
+#             serializer.errors,
+#             status=status.HTTP_400_BAD_REQUEST
+#         )
