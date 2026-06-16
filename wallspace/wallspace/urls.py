@@ -17,6 +17,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.contrib.auth import views as auth_views
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,6 +33,19 @@ urlpatterns = [
     path('logout/',auth_views.LogoutView.as_view(
         template_name='users/logout.html'),
         name='logout'),
+
+    # ---------- api urls ----------
+    path('api/token/', TokenObtainPairView.as_view(),
+         name='token_obtain_pair'),
+
+    path('api/token/refresh/',
+         TokenRefreshView.as_view(),
+         name='token_refresh'),
+
+        # app APIs
+    path('api/users/', include('users.api_urls')),
+    path('api/walls/', include('walls.api_urls')),
+    path('api/notes/', include('notes.api_urls')),
 
     
     
