@@ -355,3 +355,53 @@ class UpdateNoteAPIView(APIView):
             serializer.errors,
             status=status.HTTP_400_BAD_REQUEST
         )
+    
+class DeleteNoteAPIView(APIView):
+
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request, pk):
+
+        note = get_object_or_404(
+            Note,
+            pk=pk
+        )
+
+        wall = note.wall
+
+        is_owner = (
+            wall.owner == request.user
+        )
+
+        member = (
+            WallMember.objects.filter(
+                wall=wall,
+                user=request.user
+            ).first()
+        )
+
+        can_edit = (
+            is_owner or (
+                member and
+                member.role == "editor"
+            )
+        )
+
+        if not can_edit:
+
+            return Response(
+                {
+                    "error":
+                    "Permission denied"
+                },
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        note.delete()
+
+        return Response(
+            {
+                "message":
+                "Note deleted successfully"
+            }
+        )
