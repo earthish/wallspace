@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from .models import Wall
+from .models import Wall, WallMember
+
 
 class WallSerializer(serializers.ModelSerializer):
     owner=serializers.ReadOnlyField(
@@ -13,4 +14,19 @@ class WallSerializer(serializers.ModelSerializer):
             'title',
             'owner',
             'created_at'
+        ]
+
+from .models import WallMember
+
+
+class WallMemberSerializer(
+    serializers.ModelSerializer
+):
+
+    class Meta:
+        model = WallMember
+        fields = [
+            'id',
+            'user',
+            'role'
         ]

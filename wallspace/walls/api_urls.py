@@ -2,7 +2,8 @@ from django.urls import path
 from .views import (
     
     WallListAPIView,
-    CreateWallAPIView
+    CreateWallAPIView,
+    WallDetailAPIView
 
 )
 urlpatterns = [
@@ -10,12 +11,17 @@ urlpatterns = [
     path(
         '',
         WallListAPIView.as_view(),
-        name='wall-list'
+        name='api-wall-list'
     ),
 
     path(
         'create/',
         CreateWallAPIView.as_view(),
-        name='wall-create'
+        name='api-wall-create'
+    ),
+    path(
+        '<int:pk>/',
+        WallDetailAPIView.as_view(),
+        name='api-wall-detail'
     ),
 ]

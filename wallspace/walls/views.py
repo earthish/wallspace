@@ -14,8 +14,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
-
-from .serializers import WallSerializer
+from notes.serializers import NoteSerializer
+from .serializers import WallSerializer, WallMemberSerializer
 # Create your views here.
 
 @login_required #decorator, it checks automatically if a certain condition is satisfied or not
@@ -325,6 +325,86 @@ class CreateWallAPIView(APIView):
             serializer.errors,
             status=status.HTTP_400_BAD_REQUEST
         )
+    
+class WallDetailAPIView(APIView):
+
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, pk):
+
+        wall = get_object_or_404(
+            Wall,
+            pk=pk
+        )
+
+        is_owner = (
+            wall.owner == request.user
+        )
+
+        member = (
+            WallMember.objects.filter(
+                wall=wall,
+                user=request.user
+            ).first()
+        )
+
+        is_member = (
+            member is not None
+        )
+
+        can_edit = (
+            is_owner or (
+                member and
+                member.role == "editor"
+            )
+        )
+
+        if (
+            not is_owner
+            and
+            not is_member
+        ):
+            return Response(
+                {
+                    "error":
+                    "Access denied"
+                },
+                status=403
+            )
+
+        wall_serializer = (
+            WallSerializer(wall)
+        )
+
+        member_serializer = (
+            WallMemberSerializer(
+                WallMember.objects.filter(
+                    wall=wall
+                ),
+                many=True
+            )
+        )
+        notes_serializer = NoteSerializer(
+            wall.notes.all(),
+            many=True
+        )
+
+        return Response({
+            "wall":
+                wall_serializer.data,
+
+            "is_owner":
+                is_owner,
+
+            "can_edit":
+                can_edit,
+
+            "members":
+                member_serializer.data,
+
+            "notes":
+                notes_serializer.data
+        })
 # class WallListCreateAPIView(APIView):
 
 #     permission_classes = [IsAuthenticated]
