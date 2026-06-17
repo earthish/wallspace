@@ -2,9 +2,21 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse
 from .models import Note
 import json
-from walls.models import WallMember
+from walls.models import WallMember, Wall
 from django.contrib.auth.decorators import login_required
+
+#for api 
+import random
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from rest_framework import status
+
+from .serializers import NoteSerializer
+
 # Create your views here.
+
 
 @login_required
 def update_position(request):
@@ -210,3 +222,76 @@ def update_size(request):
         },
         status=400
     )
+class CreateNoteAPIView(APIView):
+
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+
+        wall_id = request.data.get(
+            'wall_id'
+        )
+
+        wall = get_object_or_404(
+            Wall,
+            id=wall_id
+        )
+
+        is_owner = (
+            wall.owner == request.user
+        )
+
+        member = (
+            WallMember.objects.filter(
+                wall=wall,
+                user=request.user
+            ).first()
+        )
+
+        can_edit = (
+            is_owner or (
+                member and
+                member.role == "editor"
+            )
+        )
+
+        if not can_edit:
+
+            return Response(
+                {
+                    "error":
+                    "You do not have permission to create notes"
+                },
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        serializer = NoteSerializer(
+            data=request.data
+        )
+
+        if serializer.is_valid():
+
+            serializer.save(
+                creator=request.user,
+                wall=wall,
+                x_position=random.randint(
+                    50,
+                    600
+                ),
+                y_position=random.randint(
+                    50,
+                    400
+                ),
+                width=220,
+                height=120
+            )
+
+            return Response(
+                serializer.data,
+                status=status.HTTP_201_CREATED
+            )
+
+        return Response(
+            serializer.errors,
+            status=status.HTTP_400_BAD_REQUEST
+        )

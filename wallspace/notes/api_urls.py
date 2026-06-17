@@ -1,3 +1,10 @@
 from django.urls import path
+from .views import CreateNoteAPIView
 
-urlpatterns = []
+urlpatterns = [
+    path(
+        'create/',
+        CreateNoteAPIView.as_view(),
+        name='api-note-create'
+    ),   
+]
