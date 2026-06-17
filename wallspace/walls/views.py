@@ -405,6 +405,37 @@ class WallDetailAPIView(APIView):
             "notes":
                 notes_serializer.data
         })
+    
+class UpdateWallAPIView(APIView):
+
+    permission_classes = [IsAuthenticated]
+
+    def put(self, request, pk):
+
+        wall = get_object_or_404(
+            Wall,
+            pk=pk,
+            owner=request.user
+        )
+
+        serializer = WallSerializer(
+            wall,
+            data=request.data,
+            partial=True
+        )
+
+        if serializer.is_valid():
+
+            serializer.save()
+
+            return Response(
+                serializer.data
+            )
+
+        return Response(
+            serializer.errors,
+            status=status.HTTP_400_BAD_REQUEST
+        )
 # class WallListCreateAPIView(APIView):
 
 #     permission_classes = [IsAuthenticated]

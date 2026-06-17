@@ -3,7 +3,9 @@ from .views import (
     
     WallListAPIView,
     CreateWallAPIView,
-    WallDetailAPIView
+    WallDetailAPIView,
+    UpdateWallAPIView
+
 
 )
 urlpatterns = [
@@ -23,5 +25,10 @@ urlpatterns = [
         '<int:pk>/',
         WallDetailAPIView.as_view(),
         name='api-wall-detail'
+    ),
+    path(
+        '<int:pk>/update/',
+        UpdateWallAPIView.as_view(),
+        name='api-wall-update'
     ),
 ]
