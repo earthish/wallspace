@@ -1,13 +1,11 @@
 from django.urls import path
 from .views import (
-    
     WallListAPIView,
     CreateWallAPIView,
     WallDetailAPIView,
     UpdateWallAPIView,
-    DeleteWallAPIView
-
-
+    DeleteWallAPIView,
+    InviteMemberAPIView
 )
 urlpatterns = [
     
@@ -36,5 +34,10 @@ urlpatterns = [
         '<int:pk>/delete/',
         DeleteWallAPIView.as_view(),
         name='api-wall-delete'
-    )
+    ),
+    path(
+        '<int:pk>/invite/',
+        InviteMemberAPIView.as_view(),
+        name='api-invite-member'
+    ),
 ]

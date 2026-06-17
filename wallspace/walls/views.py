@@ -15,7 +15,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from notes.serializers import NoteSerializer
-from .serializers import WallSerializer, WallMemberSerializer
+from .serializers import WallSerializer, WallMemberSerializer, InviteMemberSerializer
 # Create your views here.
 
 @login_required #decorator, it checks automatically if a certain condition is satisfied or not
@@ -458,6 +458,91 @@ class DeleteWallAPIView(APIView):
             },
             status=status.HTTP_200_OK
         )
+    
+class InviteMemberAPIView(APIView):
+
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, pk):
+
+        wall = get_object_or_404(
+            Wall,
+            pk=pk
+        )
+
+        # Only owner can invite
+        if wall.owner != request.user:
+
+            return Response(
+                {
+                    "error":
+                    "Only owner can invite members"
+                },
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        serializer = InviteMemberSerializer(
+            data=request.data
+        )
+
+        if not serializer.is_valid():
+
+            return Response(
+                serializer.errors,
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        username = serializer.validated_data[
+            'username'
+        ]
+
+        role = serializer.validated_data[
+            'role'
+        ]
+
+        try:
+
+            User.objects.get(
+                username=username
+            )
+
+            member, created = (
+                WallMember.objects.get_or_create(
+                    wall=wall,
+                    user=username,
+                    defaults={
+                        'role': role
+                    }
+                )
+            )
+
+            if not created:
+
+                return Response(
+                    {
+                        "message":
+                        "User already a member"
+                    },
+                    status=status.HTTP_200_OK
+                )
+
+            return Response(
+                {
+                    "message":
+                    "Member invited successfully"
+                },
+                status=status.HTTP_201_CREATED
+            )
+
+        except User.DoesNotExist:
+
+            return Response(
+                {
+                    "error":
+                    "User not found"
+                },
+                status=status.HTTP_404_NOT_FOUND
+            )
 # class WallListCreateAPIView(APIView):
 
 #     permission_classes = [IsAuthenticated]

@@ -30,3 +30,16 @@ class WallMemberSerializer(
             'user',
             'role'
         ]
+
+class InviteMemberSerializer(serializers.Serializer):
+
+    username = serializers.CharField(
+        max_length=150
+    )
+
+    role = serializers.ChoiceField(
+        choices=[
+            ('viewer', 'Viewer'),
+            ('editor', 'Editor')
+        ]
+    )
