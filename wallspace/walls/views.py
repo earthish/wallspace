@@ -436,6 +436,28 @@ class UpdateWallAPIView(APIView):
             serializer.errors,
             status=status.HTTP_400_BAD_REQUEST
         )
+    
+class DeleteWallAPIView(APIView):
+
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request, pk):
+
+        wall = get_object_or_404(
+            Wall,
+            pk=pk,
+            owner=request.user
+        )
+
+        wall.delete()
+
+        return Response(
+            {
+                "message":
+                "Wall deleted successfully"
+            },
+            status=status.HTTP_200_OK
+        )
 # class WallListCreateAPIView(APIView):
 
 #     permission_classes = [IsAuthenticated]
