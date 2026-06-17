@@ -295,3 +295,63 @@ class CreateNoteAPIView(APIView):
             serializer.errors,
             status=status.HTTP_400_BAD_REQUEST
         )
+    
+class UpdateNoteAPIView(APIView):
+
+    permission_classes = [IsAuthenticated]
+
+    def patch(self, request, pk):
+
+        note = get_object_or_404(
+            Note,
+            pk=pk
+        )
+
+        wall = note.wall
+
+        is_owner = (
+            wall.owner == request.user
+        )
+
+        member = (
+            WallMember.objects.filter(
+                wall=wall,
+                user=request.user
+            ).first()
+        )
+
+        can_edit = (
+            is_owner or (
+                member and
+                member.role == "editor"
+            )
+        )
+
+        if not can_edit:
+
+            return Response(
+                {
+                    "error":
+                    "Permission denied"
+                },
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        serializer = NoteSerializer(
+            note,
+            data=request.data,
+            partial=True
+        )
+
+        if serializer.is_valid():
+
+            serializer.save()
+
+            return Response(
+                serializer.data
+            )
+
+        return Response(
+            serializer.errors,
+            status=status.HTTP_400_BAD_REQUEST
+        )
