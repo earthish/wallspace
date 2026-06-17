@@ -578,6 +578,39 @@ class ToggleRoleAPIView(APIView):
                 "new_role": member.role
             }
         )
+class RemoveMemberAPIView(APIView):
+
+    permission_classes = [IsAuthenticated]
+
+    def delete(
+        self,
+        request,
+        wall_id,
+        member_id
+    ):
+
+        wall = get_object_or_404(
+            Wall,
+            id=wall_id,
+            owner=request.user
+        )
+
+        member = get_object_or_404(
+            WallMember,
+            id=member_id,
+            wall=wall
+        )
+
+        member.delete()
+
+        return Response(
+            {
+                "message":
+                "Member removed successfully"
+            }
+        )
+    
+
 # class WallListCreateAPIView(APIView):
 
 #     permission_classes = [IsAuthenticated]

@@ -6,7 +6,8 @@ from .views import (
     UpdateWallAPIView,
     DeleteWallAPIView,
     InviteMemberAPIView,
-    ToggleRoleAPIView
+    ToggleRoleAPIView,
+    RemoveMemberAPIView
 )
 urlpatterns = [
     
@@ -45,5 +46,10 @@ urlpatterns = [
         '<int:wall_id>/members/<int:member_id>/toggle-role/',
         ToggleRoleAPIView.as_view(),
         name='api-toggle-role'
+    ),
+    path(
+        '<int:wall_id>/members/<int:member_id>/remove/',
+        RemoveMemberAPIView.as_view(),
+        name='api-remove-member'
     ),
 ]
