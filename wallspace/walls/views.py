@@ -543,6 +543,41 @@ class InviteMemberAPIView(APIView):
                 },
                 status=status.HTTP_404_NOT_FOUND
             )
+        
+class ToggleRoleAPIView(APIView):
+
+    permission_classes = [IsAuthenticated]
+
+    def patch(self, request, wall_id, member_id):
+
+        wall = get_object_or_404(
+            Wall,
+            id=wall_id,
+            owner=request.user
+        )
+
+        member = get_object_or_404(
+            WallMember,
+            id=member_id,
+            wall=wall
+        )
+
+        if member.role == "viewer":
+
+            member.role = "editor"
+
+        else:
+
+            member.role = "viewer"
+
+        member.save()
+
+        return Response(
+            {
+                "user": member.user,
+                "new_role": member.role
+            }
+        )
 # class WallListCreateAPIView(APIView):
 
 #     permission_classes = [IsAuthenticated]

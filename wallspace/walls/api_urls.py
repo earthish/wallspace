@@ -5,7 +5,8 @@ from .views import (
     WallDetailAPIView,
     UpdateWallAPIView,
     DeleteWallAPIView,
-    InviteMemberAPIView
+    InviteMemberAPIView,
+    ToggleRoleAPIView
 )
 urlpatterns = [
     
@@ -39,5 +40,10 @@ urlpatterns = [
         '<int:pk>/invite/',
         InviteMemberAPIView.as_view(),
         name='api-invite-member'
+    ),
+    path(
+        '<int:wall_id>/members/<int:member_id>/toggle-role/',
+        ToggleRoleAPIView.as_view(),
+        name='api-toggle-role'
     ),
 ]
