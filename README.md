@@ -103,4 +103,3 @@ sql/wallspace_schema.sql
 
 **Prithvish Mohanty**
 
-Developed as part of a Full Stack Application Development Internship.
