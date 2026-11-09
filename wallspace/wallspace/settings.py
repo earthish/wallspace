@@ -101,8 +101,8 @@ CACHES = {
 }
 
 # Store Django sessions in Redis
-SESSION_ENGINE = "django.contrib.sessions.backends.cached_db"
-SESSION_CACHE_ALIAS = "default"
+SESSION_ENGINE = "django.contrib.sessions.backends.db"
+#SESSION_CACHE_ALIAS = "default"
 
 
 # Password validation
